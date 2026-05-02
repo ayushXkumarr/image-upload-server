@@ -8,9 +8,13 @@ require('dotenv').config();
 
 const app = express();
 
+// ✅ FIX: Default port for CI + local
+const PORT = process.env.PORT || 3001;
+
+// ✅ Multer config (memory storage + validation)
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 2 * 1024 * 1024 },
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
   fileFilter: (req, file, cb) => {
     if (!file.mimetype.startsWith('image/')) {
       return cb(new Error('Only images allowed'));
@@ -19,6 +23,12 @@ const upload = multer({
   }
 });
 
+// ✅ NEW: Health check route (for CI)
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
+
+// ✅ Upload route
 app.post('/upload', upload.single('image'), async (req, res) => {
   try {
     const file = req.file;
@@ -32,9 +42,10 @@ app.post('/upload', upload.single('image'), async (req, res) => {
       .resize({ width: 300 })
       .toBuffer();
 
+    // 🔥 Unique filename
     const fileName = `${uuidv4()}-${Date.now()}.jpg`;
 
-    // 🔥 NEW AWS SDK v3 upload
+    // 🔥 Upload to S3
     const command = new PutObjectCommand({
       Bucket: process.env.S3_BUCKET_NAME,
       Key: fileName,
@@ -46,7 +57,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
     const url = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
 
-    console.log(`Handled by PORT ${process.env.PORT}`);
+    console.log(`Handled by PORT ${PORT}`);
 
     res.json({ url });
 
@@ -56,6 +67,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
+// ✅ Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
