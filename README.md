@@ -333,42 +333,42 @@ Open the returned URL in a browser — the image should load directly.
 ### 1. API Upload — Successful Response
 > Multiple `curl` requests sent to the server, each returning a unique public S3 URL confirming successful upload.
 
-![API Upload Success](screenshots/api response.png)
+![API Upload Success](screenshots/api-response.png)
 
 ---
 
 ### 2. AWS S3 Bucket — Uploaded Images
 > The S3 bucket `image-upload-bucket-ayushxkumar` showing **8 uploaded objects** with UUID-based filenames, timestamps, and sizes.
 
-![S3 Bucket](screenshots/s3 bucket.png)
+![S3 Bucket](screenshots/s3-bucket.png)
 
 ---
 
 ### 3. Image Accessible via Public S3 URL
 > The uploaded Zoro image opened directly in the browser using the returned S3 URL — confirming public access is working correctly.
 
-![Image via S3 URL](screenshots/public url.png)
+![Image via S3 URL](screenshots/public-url.png)
 
 ---
 
 ### 4. Server 1 — Running on Port 3001
 > Terminal showing `Server running on port 3001` with multiple `Handled by PORT 3001` logs confirming requests are being received.
 
-![Server 1 Port 3001](screenshots/server 1.png)
+![Server 1 Port 3001](screenshots/server-1.png)
 
 ---
 
 ### 5. Server 2 — Running on Port 3002
 > Terminal showing `Server running on port 3002` with `Handled by PORT 3002` logs — proving round-robin load balancing is distributing traffic across both instances.
 
-![Server 2 Port 3002](screenshots/server 2.png)
+![Server 2 Port 3002](screenshots/server-2.png)
 
 ---
 
 ### 6. GitHub Actions — CI Pipeline
 > GitHub Actions tab showing the Node.js CI workflow with multiple runs triggered on push to `main`.
 
-![GitHub Actions CI](screenshots/CI pipeline.png)
+![GitHub Actions CI](screenshots/CI-pipeline.png)
 
 ---
 
